@@ -4,6 +4,7 @@
 
 #include <ctc.h>
 
+
 #include "detail/cpu_ctc.h"
 #ifdef __CUDACC__
     #include "detail/gpu_ctc.h"
@@ -33,6 +34,13 @@ const char* ctcGetStatusString(ctcStatus_t status) {
 
     }
 
+}
+
+inline void throw_on_error(ctcStatus_t status, const char* message) {
+    if (status != CTC_STATUS_SUCCESS) {
+        throw std::runtime_error(message + (", stat = " +
+                                            std::string(ctcGetStatusString(status))));
+    }
 }
 
 
@@ -173,4 +181,10 @@ ctcStatus_t get_workspace_size(const int* const label_lengths,
     return CTC_STATUS_SUCCESS;
 }
 
-}
+
+ }
+
+
+
+
+
